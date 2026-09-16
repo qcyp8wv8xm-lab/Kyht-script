@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>KYHT · Roblox Lua Community</title>
+<style>
+:root{
+  --bg:#050817;
+  --panel:#0b1227cc;
+  --line:#1c4166;
+  --text:#edf7ff;
+  --muted:#a8b9d8;
+  --cyan:#45dfff;
+  --blue:#167cf4;
+  --purple:#7544e8;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;min-height:100vh;color:var(--text);
+  font-family:Inter,system-ui,-apple-system,"Segoe UI","Microsoft YaHei",sans-serif;
+  background:
+    radial-gradient(ellipse at 15% 25%,#06356b55 0,transparent 42%),
+    radial-gradient(ellipse at 85% 45%,#5221a844 0,transparent 45%),
+    linear-gradient(180deg,#030611,#07132b 58%,#050817);
+  overflow-x:hidden;
+}
+#stars{position:fixed;inset:0;z-index:-3;pointer-events:none}
+.aurora,.aurora:before,.aurora:after{
+  position:fixed;content:"";pointer-events:none;z-index:-2;
+  width:65vw;height:65vw;border:1px solid #28bfff22;border-radius:48%;
+  filter:blur(.4px);animation:orbit 34s linear infinite;
+}
+.aurora{left:-35vw;top:10vh;box-shadow:0 0 100px #087bff14}
+.aurora:before{left:80vw;top:20vh;width:75vw;height:75vw;border-color:#a56cff24;animation-duration:45s;animation-direction:reverse}
+.aurora:after{left:30vw;top:65vh;width:80vw;height:80vw;border-color:#35f0d31a;animation-duration:58s}
+@keyframes orbit{from{transform:rotate(0) translate3d(0,0,0)}50%{transform:rotate(180deg) translate3d(3vw,-2vh,0) scale(1.08)}to{transform:rotate(360deg) translate3d(0,0,0)}}
+header{
+  position:sticky;top:0;z-index:10;
+  border-bottom:1px solid #17314f;
+  background:#030611d9;backdrop-filter:blur(18px);
+}
+.nav{
+  max-width:1180px;margin:auto;padding:18px 28px;
+  display:flex;align-items:center;justify-content:space-between;gap:20px;
+}
+.logo{font-size:28px;font-weight:900;letter-spacing:7px;color:var(--cyan);text-shadow:0 0 22px #23bfff88}
+.navlinks{display:flex;gap:22px;flex-wrap:wrap}
+.navlinks a{color:#c3d3ef;text-decoration:none;font-size:14px}
+.navlinks a:hover{color:var(--cyan)}
+main{max-width:1180px;margin:auto;padding:70px 28px}
+.hero{min-height:680px;display:grid;grid-template-columns:1.15fr .85fr;align-items:center;gap:35px}
+.kicker{color:var(--cyan);letter-spacing:6px;font-weight:800;font-size:14px}
+h1{
+  font-size:clamp(64px,10vw,126px);line-height:.95;margin:24px 0 20px;
+  letter-spacing:-5px;
+  background:linear-gradient(120deg,#fff 15%,#bdf7ff 45%,#6bdcff 70%,#a48aff);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  text-shadow:0 0 45px #4ddfff18;
+}
+.hero h2{font-size:clamp(26px,4vw,45px);margin:0 0 22px}
+p{color:var(--muted);line-height:1.9;font-size:17px}
+.actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  padding:16px 25px;border-radius:17px;border:1px solid #2575ad;
+  color:white;text-decoration:none;font-size:18px;font-weight:800;
+  background:#081a34cc;transition:transform .2s,filter .2s,box-shadow .2s;
+}
+.btn.primary{border-color:#31cfff;background:linear-gradient(110deg,#067df5,#7740e7);box-shadow:0 0 28px #246cff35}
+.btn:hover{transform:translateY(-3px);filter:brightness(1.15);box-shadow:0 0 28px #27cfff24}
+.hero-panel{
+  position:relative;overflow:hidden;border:1px solid #2a547b;
+  border-radius:30px;padding:30px;background:linear-gradient(145deg,#102341cc,#090d20dd);
+  box-shadow:0 0 70px #007bff12,inset 0 0 50px #1b64a40b;
+}
+.hero-panel:before{content:"";position:absolute;inset:-2px;background:linear-gradient(120deg,transparent,#4bdfff22,transparent);transform:translateX(-100%);animation:scan 7s infinite}
+@keyframes scan{55%,100%{transform:translateX(100%)}}
+.panel-title{font-size:13px;letter-spacing:4px;color:var(--cyan);font-weight:800}
+.panel-big{font-size:72px;font-weight:900;margin:25px 0 5px;background:linear-gradient(90deg,#fff,var(--cyan));-webkit-background-clip:text;color:transparent}
+.statline{display:flex;justify-content:space-between;border-top:1px solid #24415e;padding:16px 0;color:#c2d6f3}
+.section-title{font-size:42px;margin:80px 0 26px;letter-spacing:-1px}
+.section-title span{color:var(--cyan)}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.card{
+  border:1px solid #203c5b;border-radius:22px;padding:25px;
+  background:linear-gradient(145deg,#0e1b32cc,#080e20dd);
+  transition:transform .2s,border-color .2s;
+}
+.card:hover{transform:translateY(-5px);border-color:#3bcfff}
+.card h3{margin:0 0 12px;color:#bcefff;font-size:21px}
+.card p{font-size:15px;margin-bottom:0}
+.groups{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
+.group{
+  min-height:125px;display:flex;flex-direction:column;justify-content:space-between;
+  padding:20px;border:1px solid #24517a;border-radius:20px;text-decoration:none;color:white;
+  background:linear-gradient(145deg,#102642cc,#0a1124dd);
+}
+.group:hover{border-color:var(--cyan);transform:translateY(-4px)}
+.group b{font-size:17px}.group small{color:#8fa9ce;margin-top:14px}
+.formbox{max-width:720px;border:1px solid #244c70;border-radius:25px;padding:28px;background:#0a1428dd}
+form{display:grid;gap:15px}label{font-size:14px;color:#cfe2fb}
+input,textarea{
+  width:100%;margin-top:7px;padding:14px;border-radius:12px;
+  border:1px solid #2c4c6e;background:#050b19;color:white;font:inherit;
+}
+textarea{min-height:120px;resize:vertical}
+button{padding:15px;border:0;border-radius:13px;color:white;font-weight:800;font-size:16px;background:linear-gradient(110deg,#087ff5,#7541e5);cursor:pointer}
+#status{min-height:24px;color:var(--cyan)}
+.note{font-size:13px;color:#8298ba}
+footer{text-align:center;padding:50px 20px;color:#6f86a9;border-top:1px solid #17314f}
+@media(max-width:850px){
+  .hero{grid-template-columns:1fr;min-height:auto;padding-top:25px}
+  .hero-panel{margin-top:15px}
+  .cards{grid-template-columns:1fr 1fr}
+  .groups{grid-template-columns:1fr 1fr}
+  .nav{padding:16px 20px}.navlinks{gap:12px}
+}
+@media(max-width:480px){
+  main{padding:45px 18px}
+  h1{font-size:70px;letter-spacing:-3px}
+  .cards{grid-template-columns:1fr}
+  .groups{grid-template-columns:1fr}
+  .btn{width:100%}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*:before,*:after{animation:none!important;scroll-behavior:auto!important}
+}
+</style>
+</head>
+<body>
+<canvas id="stars"></canvas><div class="aurora"></div>
+
+<header>
+  <div class="nav">
+    <div class="logo">KYHT</div>
+    <nav class="navlinks">
+      <a href="#intro">首页</a><a href="#services">功能</a><a href="#groups">群聊</a><a href="#apply">填写资料</a>
+    </nav>
+    <a class="btn primary" style="padding:10px 15px;font-size:14px" href="#groups">加入群聊 ↗</a>
+  </div>
+</header>
+
+<main>
+<section class="hero" id="intro">
+  <div>
+    <div class="kicker">◇ ROBLOX · LUA · COMMUNITY</div>
+    <h1>KYHT</h1>
+    <h2>Future Tech Community</h2>
+    <p>欢迎来到 KYHT Roblox 社区。这里是 Roblox 游戏交流、Lua 编程学习、脚本开发知识分享和社区讨论的空间。</p>
+    <div class="actions">
+      <a class="btn primary" href="#groups">加入我们的群聊 →</a>
+      <a class="btn" href="#services">探索功能 ↓</a>
+    </div>
+    <div style="display:flex;gap:45px;flex-wrap:wrap;margin-top:48px">
+      <div><strong style="font-size:35px;color:var(--cyan)">KYHT</strong><br><span style="color:#9fb5d6">COMMUNITY</span></div>
+      <div><strong style="font-size:35px;color:var(--cyan)">24/7</strong><br><span style="color:#9fb5d6">交流空间</span></div>
+      <div><strong style="font-size:35px;color:var(--cyan)">∞</strong><br><span style="color:#9fb5d6">学习可能</span></div>
+    </div>
+  </div>
+  <aside class="hero-panel">
+    <div class="panel-title">KYHT COMMUNITY SYSTEM</div>
+    <div class="panel-big">ONLINE</div>
+    <p>Roblox / Lua / 游戏开发 / 社区交流</p>
+    <div class="statline"><span>社区状态</span><b style="color:#63f4bd">开放中</b></div>
+    <div class="statline"><span>交流方向</span><b>游戏与编程</b></div>
+    <div class="statline"><span>申请方式</span><b>填写 QQ 资料</b></div>
+  </aside>
+</section>
+
+<h2 class="section-title" id="services">群众介绍<span> · 功能</span></h2>
+<section class="cards">
+  <article class="card"><h3>填写资料</h3><p>填写 QQ 号、QQ 昵称和申请理由，方便管理员进行入群审核。</p></article>
+  <article class="card"><h3>脚本资源</h3><p>分享 Lua 学习资料、代码示例和正常的 Roblox 游戏开发知识。</p></article>
+  <article class="card"><h3>Roblox 游戏交流</h3><p>讨论游戏玩法、更新内容、配置和游戏体验。</p></article>
+  <article class="card"><h3>解卡帮助</h3><p>交流正常申诉、账号安全和游戏问题排查方法。</p></article>
+  <article class="card"><h3>常见问题</h3><p>查看入群、资料填写、账号安全和社区规则说明。</p></article>
+  <article class="card"><h3>社区交流</h3><p>分享作品、编程学习进度和 Roblox 游戏经验。</p></article>
+</section>
+
+<h2 class="section-title" id="groups">加入<span>群聊</span></h2>
+<section class="groups">
+  <a class="group" target="_blank" rel="noopener" href="https://qun.qq.com/universal-share/share?ac=1&authKey=Uhy59i%2FArxRyHsSZCxu3KPe%2BrPK2bIpByefiLhZTwO9RMe5vfFjq0t%2BvJ50SNTDr&busi_data=eyJncm91cENvZGUiOiIxMTAzNzg2MjY2IiwidG9rZW4iOiJBUk1td1oyYldhTEtQNUkydmNBaGdjekZKVXJ2RlRRMEV2LzhUNVlNK215TElHTTBNb25pc3Y3NUtjYmoyRmN2IiwidWluIjoiMzgyODQ5MzgwNCJ9&data=Ie4EaboHh0VzNlLNFNwxI1B7-3UliDWwBSzaoktyQKU0n9mueml9RzWEpl02DopIowNNkBA3kWnUaBAzRTIbUw&svctype=4&tempid=h5_group_info"><b>KY Roblox ↗</b><small>QQ 群 01</small></a>
+  <a class="group" target="_blank" rel="noopener" href="https://qun.qq.com/universal-share/share?ac=1&authKey=ClGyhqRrLE3N%2FE8QGCr7PoaqKW5zAbi7fKNjXgvWB%2B5z9bllDFCuzdBqD%2BkJRHdL&busi_data=eyJncm91cENvZGUiOiI4MTgyMjc3NTYiLCJ0b2tlbiI6Img4WXdxd09iaVZ1d1oyY0pZMUpKK2FUWmZDelhIL1p6RWZEMS9zZFNORGQzUG9wK1JKeWVmaithUkRieUppU2QiLCJ1aW4iOiIzODI4NDkzODA0In0%3D&data=Fm4P7tNtmnW6AdSCw1jtosxTFRQcHPuTZRvKGb3MAgAYE_uF2xkQ6rhhYAK5ugZyzsTqSuZyEn9qUCVjBVEKbw&svctype=4&tempid=h5_group_info"><b>Kyht2 ↗</b><small>QQ 群 02</small></a>
+  <a class="group" target="_blank" rel="noopener" href="https://qun.qq.com/universal-share/share?ac=1&authKey=JuEe6HsLZyLUQKb16xt5NiwxQZ%2FaDqFpGs0mBNyFuooTX7Ao86%2Bfeg6VaNBIgP%2F3&busi_data=eyJncm91cENvZGUiOiI5MjE1OTg1NzkiLCJ0b2tlbiI6InJ4S0UrQTFCOXBDSXFRTFNQS1FxNXhqL0VqZEpCSkVIRm5PM1FJMGhxWlRSbCtVZHZjVHptSlBrandxQTI2OTkiLCJ1aW4iOiIzODI4NDkzODA0In0%3D&data=J1I7J7FC34EHh3ERGf3dlex8Y6MKNVyqZDU_dlfsD9e91bVjNdH5ASzzOaj6V0q8XFvzHNWrAXO0JIS9b3hxoA&svctype=4&tempid=h5_group_info"><b>Kyht JK ↗</b><small>QQ 群 03</small></a>
+  <a class="group" target="_blank" rel="noopener" href="https://qun.qq.com/universal-share/share?ac=1&authKey=eaqlfmq1dG6P0Z2j2Hoq04J47tsfjAsj4Y%2BIJUXRX9t%2BpHKPqENH2TnLlGHSQFPz&busi_data=eyJncm91cENvZGUiOiI0MjU2OTEyODciLCJ0b2tlbiI6ImpGbHgxL0tsanpLMVNmU0NlazBBQTBOZXBoc01KckpzcEMwdVg1Vmp6dFpOTTFDVm9YOHVZUmlhaFNtRjQwSisiLCJ1aW4iOiIzODI4NDkzODA0In0%3D&data=-lzb81s9iH6VVTFBMs0P3xbbIIrvF-qZVZBfQ1B0juA24kfcab5hbZ0S5S-m7LCeI3k1xw47AZdQve4QavV7bw&svctype=4&tempid=h5_group_info"><b>Kyht3 ↗</b><small>免费解卡 · QQ 群 04</small></a>
+  <a class="group" target="_blank" rel="noopener" href="https://discord.gg/qeryHHTfB"><b>KYHT Discord ↗</b><small>Discord 社区</small></a>
+</section>
+
+<h2 class="section-title" id="apply">填写<span>资料</span></h2>
+<div class="formbox">
+  <p>请只填写必要信息。不要填写密码、验证码、身份证号或其他敏感资料。</p>
+  <form id="applyForm">
+    <label>QQ 号<input id="qq" inputmode="numeric" pattern="[0-9]{5,12}" required placeholder="请输入 QQ 号"></label>
+    <label>QQ 昵称<input id="nickname" maxlength="40" required placeholder="请输入 QQ 昵称"></label>
+    <label>申请理由<textarea id="reason" maxlength="500" required placeholder="例如：想加入 Roblox 游戏交流和 Lua 学习讨论"></textarea></label>
+    <label><input id="agree" type="checkbox" required> 我同意资料只用于入群审核和社区管理。</label>
+    <button type="submit">发送申请 →</button>
+    <div id="status" aria-live="polite"></div>
+  </form>
+  <p class="note">当前为演示模式：申请保存在本机浏览器。要实现跨设备后台查看，需要连接真实服务器和数据库。</p>
+</div>
+</main>
+
+<footer>KYHT Roblox Community · Roblox / Lua / Game Development · 请遵守平台规则</footer>
+
+<script>
+const canvas=document.getElementById("stars"),ctx=canvas.getContext("2d");
+let stars=[],w=0,h=0;
+function resize(){
+  w=canvas.width=innerWidth*devicePixelRatio;
+  h=canvas.height=innerHeight*devicePixelRatio;
+  canvas.style.width=innerWidth+"px";canvas.style.height=innerHeight+"px";
+  stars=Array.from({length:Math.min(180,Math.floor(innerWidth/5))},()=>({
+    x:Math.random()*w,y:Math.random()*h,r:(Math.random()*1.7+.3)*devicePixelRatio,
+    v:(Math.random()*.35+.08)*devicePixelRatio,a:Math.random()*.8+.2
+  }));
+}
+function animate(){
+  ctx.clearRect(0,0,w,h);
+  for(const s of stars){
+    s.y+=s.v;if(s.y>h)s.y=-4;
+    ctx.globalAlpha=s.a;
+    ctx.fillStyle="#65dfff";
+    ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fill();
+  }
+  requestAnimationFrame(animate);
+}
+addEventListener("resize",resize);resize();animate();
+
+const form=document.getElementById("applyForm"),status=document.getElementById("status");
+form.addEventListener("submit",e=>{
+  e.preventDefault();
+  const data={
+    qq:document.getElementById("qq").value.trim(),
+    nickname:document.getElementById("nickname").value.trim(),
+    reason:document.getElementById("reason").value.trim(),
+    time:new Date().toLocaleString()
+  };
+  if(!/^[0-9]{5,12}$/.test(data.qq)){status.textContent="QQ 号格式不正确";return}
+  const old=JSON.parse(localStorage.getItem("kyht_applications")||"[]");
+  old.push(data);localStorage.setItem("kyht_applications",JSON.stringify(old));
+  status.textContent="演示申请已保存到本机浏览器。";
+  form.reset();
+});
+</script>
+</body>
+</html>
